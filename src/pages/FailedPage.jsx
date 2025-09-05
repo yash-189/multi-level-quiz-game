@@ -1,11 +1,27 @@
-import React from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { useQuiz } from "../contexts/QuizContext"
 import Button from "../components/ui/Button"
 import { LEVELS_CONFIGS } from "../utils/constants"
 
 const FailedPage = () => {
   const { currentLevel, currentLevelProgress, totalScore, retryCurrentLevel, resetGame } = useQuiz()
+  const [countdown, setCountdown] = useState(5)
+  const hasReset = useRef(false)
   const levelConfig = LEVELS_CONFIGS[currentLevel]
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1)
+      }, 1000)
+      
+      return () => clearTimeout(timer)
+    } else if (countdown === 0 && !hasReset.current) {
+      // Only reset once when countdown reaches 0
+      hasReset.current = true
+      resetGame()
+    }
+  }, [countdown]) // Remove resetGame from dependencies
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 md:p-6">
@@ -18,8 +34,13 @@ const FailedPage = () => {
           <p className="text-lg md:text-2xl text-gray-500 font-medium px-4">
             {levelConfig.name} Level Not Passed
           </p>
+          {countdown > 0 && (
+            <p className="text-sm md:text-base text-gray-400 font-medium mt-4">
+              Redirecting to home in {countdown}s...
+            </p>
+          )}
         </div>
-
+        
         <div className="mb-12 md:mb-20">
           <div className="inline-flex items-center gap-4 md:gap-6 bg-gray-50 px-8 md:px-16 py-6 md:py-8 rounded-2xl md:rounded-3xl">
             <div className="text-center">
@@ -35,19 +56,19 @@ const FailedPage = () => {
             </div>
           </div>
         </div>
-
+        
         <div className="space-y-4 md:space-y-6 max-w-xs md:max-w-sm mx-auto">
-          <Button 
+          <Button
             onClick={retryCurrentLevel}
-variant="pill"
-className="w-full"
-            >
+            variant="pill"
+            className="w-full"
+          >
             RETRY
           </Button>
-          
+         
           <button
             onClick={resetGame}
-            className="w-full h-14 md:h-16 bg-transparent hover:bg-gray-50 text-gray-600 border-2 border-gray-200 hover:border-gray-300 font-bold text-lg md:text-xl transition-all duration-300 rounded-xl md:rounded-2xl"
+            className="w-full h-14 md:h-16 bg-transparent hover:bg-gray-50 text-gray-600 border-2 border-gray-300 hover:border-gray-300 font-bold text-lg md:text-xl transition-all duration-300 rounded-xl md:rounded-2xl"
           >
             START OVER
           </button>

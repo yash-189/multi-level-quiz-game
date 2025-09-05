@@ -47,7 +47,7 @@ const QuizPageMobile = () => {
   const handleSubmit = () => handleAnswerSubmit(userAnswer)
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-svh bg-gray-50 flex flex-col">
       <div className="border-b border-gray-200 p-2 md:p-0 sticky top-0 z-10 max-w-6xl mx-auto w-full">
         <div className="border-b border-gray-100 px-4 md:px-8 py-3 md:py-4">
           <div className="max-w-6xl mx-auto flex items-center justify-between">

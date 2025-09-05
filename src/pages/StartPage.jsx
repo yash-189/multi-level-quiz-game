@@ -43,9 +43,10 @@ const StartPage = () => {
            START
          </Button>
          
-         <p className="text-gray-500 text-base md:text-lg px-4 md:px-0">
-           Answer 2/3 correctly to advance • Auto-save enabled
-         </p>
+<p className="text-gray-500 text-base md:text-lg px-4 md:px-0">
+  Get 2 out of 3 correct to level up • Your progress is auto-saved
+</p>
+
        </div>
      </div>
    </div>
