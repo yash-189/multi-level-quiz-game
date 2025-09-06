@@ -6,9 +6,11 @@ import { LEVELS_CONFIGS } from "../utils/constants"
 const FailedPage = () => {
   const { currentLevel, currentLevelProgress, totalScore, retryCurrentLevel, resetGame } = useQuiz()
   const [countdown, setCountdown] = useState(5)
+  // prevent multiple resetGame calls when countdown reaches 0
   const hasReset = useRef(false)
   const levelConfig = LEVELS_CONFIGS[currentLevel]
 
+  // auto-redirect countdown timer
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => {
@@ -17,11 +19,11 @@ const FailedPage = () => {
       
       return () => clearTimeout(timer)
     } else if (countdown === 0 && !hasReset.current) {
-      // Only reset once when countdown reaches 0
+      // only reset once when countdown reaches 0
       hasReset.current = true
       resetGame()
     }
-  }, [countdown]) // Remove resetGame from dependencies
+  }, [countdown]) 
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 md:p-6">

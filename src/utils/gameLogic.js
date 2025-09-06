@@ -1,7 +1,15 @@
 export const shuffleArray = (array) => {
+       
+    // copy array to avoid changing original
     const shuffled = [...array];
+
+    // start from the last element and move backwards
     for (let i = shuffled.length - 1; i > 0; i--) {
+
+        // pick random position from start to current position
         const j = Math.floor(Math.random() * (i + 1));
+        
+        // swap the current element (i) with the randomly chosen one (j)
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;

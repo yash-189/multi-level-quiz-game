@@ -51,7 +51,8 @@ export const QuizProvider = ({ children }) => {
    useEffect(() => {
        if (gameState === GAME_STATES.IN_PROGRESS && currentLevel) {
            const levelQuestions = questionsData[currentLevel] || [];
-           
+                      
+           // Only load new questions if none exist for current level
            if (questions.length === 0) {
                const shuffledQuestions = shuffleArray([...levelQuestions]);
                setQuestions(shuffledQuestions);
@@ -199,9 +200,14 @@ export const QuizProvider = ({ children }) => {
        stopTimer();
    };
 
+    // currentLevelProgress - recalculate only when answers change
    const currentLevelProgress = useMemo(() => {
+
+        //  filter all asnswers for the current level
        const answers = allAnswers.filter(answer => answer.level === currentLevel);
+       // count correct answers only
        const correct = answers.filter(a => a.isCorrect).length;
+       // get requirement from config
        const requirement = LEVELS_CONFIGS[currentLevel]?.requirement || 2;
        
        return {

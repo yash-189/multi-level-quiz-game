@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 
 export const useTimer = (duration, onTimeUp) => {
+
+    // initialize timer from localStorage or  default duration
     const [timeLeft, setTimeLeft] = useState(() => {
         try {
             const saved = localStorage.getItem('quiz-timer');
@@ -12,11 +14,13 @@ export const useTimer = (duration, onTimeUp) => {
     });
     
     const intervalRef = useRef(null);
+
+    // use ref to avoid stale closure issues with callback
     const callbackRef = useRef(onTimeUp);
     
     callbackRef.current = onTimeUp;
 
-    // Save timeLeft only when user is about to leave
+    // save timeLeft only when user is about to leave
     useEffect(() => {
         const handleBeforeUnload = () => {
             localStorage.setItem('quiz-timer', JSON.stringify(timeLeft));
@@ -39,11 +43,14 @@ export const useTimer = (duration, onTimeUp) => {
     }, []);
 
     const startTimer = () => {
+
+        // clear existing timer
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
         }
         
         intervalRef.current = setInterval(() => {
+            // timer expired - trigger callback and cleanup
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(intervalRef.current);
