@@ -17,7 +17,7 @@ export const shuffleArray = (array) => {
 
 export const checkAnswer = (userAnswer, correctAnswer, questionType) => {
     if (questionType === 'text-input') {
-        return userAnswer.toLowerCase().trim() === correctAnswer.toLowerCase().trim(); // Fixed: toLowerCase() not toLowercase()
+        return userAnswer.toLowerCase().trim() === correctAnswer.toLowerCase().trim(); 
     }
     return userAnswer === correctAnswer;
 }
